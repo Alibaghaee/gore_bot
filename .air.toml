@@ -1,0 +1,32 @@
+root = "."
+testdata_dir = "testdata"
+tmp_dir = "tmp"
+
+[build]
+  # دستور ساخت پروژه (مسیر main.go را دقیق تنظیم کردیم)
+
+  cmd = "go build -o ./tmp/main ./cmd/api/main.go"
+  # فایلی که بعد از بیلد باید اجرا شود
+  bin = "./tmp/main"
+  # تاخیر برای بیلد مجدد (میلی‌ثانیه)
+  delay = 1000
+  # پوشه‌هایی که نباید مانیتور شوند
+  exclude_dir = ["assets", "tmp", "vendor", "deployments", "testdata"]
+  # پسوندهایی که تغییر در آن‌ها باعث بیلد مجدد می‌شود
+  include_ext = ["go", "tpl", "tmpl", "html", ".env"]
+  # متوقف نشدن در صورت بروز خطای بیلد
+  stop_on_error = true
+  # ارسال سیگنال برای توقف (حیاتی برای Graceful Shutdown)
+  send_interrupt = true
+
+[color]
+  main = "magenta"
+  watcher = "cyan"
+  build = "yellow"
+  runner = "green"
+
+[log]
+  time = true
+
+[screen]
+  clear_on_rebuild = true

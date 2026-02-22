@@ -1,0 +1,25 @@
+FROM golang:1.23-alpine
+
+# ابزارهای مورد نیاز
+RUN apk add --no-cache git gcc musl-dev bash
+
+ENV PATH="/go/bin:${PATH}"
+ENV GOPROXY=https://goproxy.cn,direct
+ENV GOSUMDB=sum.golang.google.cn
+
+# نصب Air
+RUN go install github.com/air-verse/air@v1.52.3
+
+WORKDIR /app
+
+# ابتدا go.mod و go.sum را کپی کن
+COPY go.mod go.sum ./
+
+# دانلود dependencies
+RUN go mod download
+
+# حالا کل پروژه را کپی کن
+COPY . .
+
+# tidy و اجرای Air
+CMD ["sh", "-c", "go mod tidy && air -c .air.toml"]
